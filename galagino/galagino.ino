@@ -1,10 +1,10 @@
 /*
- * galagino.ino - Galaga arcade for ESP32 and Arduino IDE
+ * galagino.ino - Galaga arcade for ESP32 and Arduino IDE ported to gCore
  *
  * 
  *
  */
-
+#include "gCore.h"
 #include "driver/i2s.h"
 #include "video.h"
 #include "emulation.h"
@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+gCore gc;
 Video tft = Video();
 
 // buffer space for one row of 28 characters
@@ -299,7 +300,7 @@ void snd_transmit() {
       snd_render_buffer();
     }
 
-    // printf("WR %ld\n", bytesOut);
+//    printf("WR %ld\n", bytesOut);
   } while(bytesOut);
 }
 
@@ -326,16 +327,23 @@ void update_screen(void) {
   static const signed char speeds[8] = { -1, -2, -3, 0, 3, 2, 1, 0 };
   stars_scroll_y += 2*speeds[starcontrol & 7];
   
-  // one screen at 60 Hz is 16.6ms
-  // -> one screen at 30 Hz is 33ms   
+  // one screen at 60 Hz is 16.67ms
+  // -> one screen at 30 Hz is 33.33ms   
   t = (micros()-t)/1000;  // calculate time in milliseconds
+#ifdef FAST_FPS
+  if(t<17) vTaskDelay(17-t);
+#else
   if(t<33) vTaskDelay(33-t);
+#endif
   else     vTaskDelay(1);    // at least 1 ms delay to prevent watchdog timeout
   
-  // printf("uspf %d\n", t);
+//  printf("uspf %d\n", t);
 }
 
 void video(void *p) {
+  esp_err_t ret;
+  int chk_cnt = 0;
+  
   tft.begin();
 
   // init audio
@@ -350,7 +358,8 @@ void video(void *p) {
 #else
     .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
 #endif
-    .communication_format = (i2s_comm_format_t)I2S_COMM_FORMAT_I2S_MSB,
+//    .communication_format = (i2s_comm_format_t)I2S_COMM_FORMAT_I2S_MSB,
+    .communication_format = I2S_COMM_FORMAT_STAND_MSB,
     .intr_alloc_flags = 0,
     .dma_buf_count = 4,
     .dma_buf_len = 64,   // 64 samples
@@ -360,15 +369,32 @@ void video(void *p) {
   snd_prepare();
   snd_render_buffer();
   i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
-  i2s_set_pin(I2S_NUM_0, NULL);  // use dac on gpio25/26 */
-  i2s_start(I2S_NUM_0);
+  // use dac on default gpio25/26
+//  i2s_set_pin(I2S_NUM_0, NULL);
+  i2s_set_dac_mode(I2S_DAC_CHANNEL_BOTH_EN);
+//  i2s_start(I2S_NUM_0);
 
-  while(1) update_screen();
+  while(1) {
+    update_screen();
+
+    // Periodically check for power off button press
+    if ((+chk_cnt % 30) == 0) {
+      if (gc.power_button_pressed()) {
+        gc.power_off();
+      }
+    }
+  }
 }
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Galagino"); 
+  Serial.println();
+  Serial.println("Galagino");
+
+  // Setup gCore
+  gc.begin();
+  gc.power_set_brightness(100);
+  gc.power_set_button_short_press_msec(100);
 
   // this should not be needed as the CPU runs by default on 240Mht nowadays
   setCpuFrequencyMhz(240000000);
@@ -381,13 +407,13 @@ void setup() {
   frame_buffer = (unsigned short*)malloc(224*8*2);
   sprite = (struct sprite_S*)malloc(96 * sizeof(struct sprite_S));
   Serial.print("Free heap: "); Serial.println(ESP.getFreeHeap());
-
+  
   // make button pins inputs
-  pinMode(BTN_START_PIN, INPUT_PULLUP);
-  pinMode(BTN_COIN_PIN, INPUT_PULLUP);
-  pinMode(BTN_LEFT_PIN, INPUT_PULLUP);
-  pinMode(BTN_RIGHT_PIN, INPUT_PULLUP);
-  pinMode(BTN_FIRE_PIN, INPUT_PULLUP);
+  pinMode(BTN_START_PIN, INPUT);
+  pinMode(BTN_COIN_PIN, INPUT);
+  pinMode(BTN_LEFT_PIN, INPUT);
+  pinMode(BTN_RIGHT_PIN, INPUT);
+  pinMode(BTN_FIRE_PIN, INPUT);
 
   prepare_emulation();
   // while(!game_started) emulate_frame();

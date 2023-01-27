@@ -1,4 +1,27 @@
-# Galagino
+# Galagino ported to gCore
+This repo is a fork of Till Harbaum's awesome Galaga emulator ported to gCore.  It runs really well.
+
+![Galaga on gCore](images/gcore_galaga.png)
+
+I made the following changes.
+
+1. Changed from ILI9341 LCD driver in video.c to use my port of TFT_eSPI.
+2. Changed GPIO pins for buttons (see below).
+3. Added a background image around the pay field.
+4. Added a FAST_FPS flag to config.h to try for 60 FPS updates instead of the default 30 FPS (looked at in galingo.ino).
+5. Detect fast press of gCore power button to power down.
+6. A little cleanup.
+
+Compiled on Arduino 1.8.19 with ESP32 Arduino package 2.0.6.  You'll need the following libraries installed and to follow Till's original instructions below which include downloading the Z80 emulator, and finding and downloading the Galaga ROM files, then running his scripts to process them.
+
+1. My version of [TFT_eSPI](https://github.com/danjulio/TFT_eSPI).
+2. Arduino [gCore](https://github.com/danjulio/gCore/tree/main/Arduino/gCore) library.  Can also be directly downloaded from my [website](https://danjuliodesigns.com/products/gcore.html).
+
+The hookup diagram is shown below.  You can put the buttons on a proto board as I did or you can use a breadboard as Till did.  External pull-up resistors are required since I am using GPIO34-39 (10 k-ohm is fine).  I used an [amp breakout board](https://www.sparkfun.com/products/11044) from Sparkfun but only because I had it laying around.  You can also use the amp boards Till mentions.
+
+![gCore Galaga hookup diagram](images/galaga_block_diagram.png)
+
+# Till Harbaum's Original Readme Below
 ## Galaga arcade emulator for ESP32
 
 ![Galagino screencast](images/galagino.gif)

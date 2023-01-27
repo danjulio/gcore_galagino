@@ -13,3 +13,6 @@ starseed.h
 tileaddr.h
 tilemap.h
 wavetables.h
+esp32.svd
+debug.cfg
+debug_custom.json
