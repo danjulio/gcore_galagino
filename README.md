@@ -1,5 +1,5 @@
 # Galagino ported to gCore
-This repo is a fork of Till Harbaum's awesome Galaga emulator ported to gCore.  It runs really well.
+This repo is a fork of Till Harbaum's awesome [Galaga emulator](https://github.com/harbaum/galagino) ported to gCore.  It runs really well.
 
 ![Galaga on gCore](images/gcore_galaga.png)
 
@@ -7,7 +7,7 @@ I made the following changes.
 
 1. Changed from ILI9341 LCD driver in video.c to use my port of TFT_eSPI.
 2. Changed GPIO pins for buttons (see below).
-3. Added a background image around the pay field.
+3. Added a background image around the play field.
 4. Added a FAST_FPS flag to config.h to try for 60 FPS updates instead of the default 30 FPS (looked at in galingo.ino).
 5. Detect fast press of gCore power button to power down.
 6. A little cleanup.
