@@ -7,6 +7,9 @@
 // update rate - undefine to try 60 Hz instead of 30 Hz
 #define FAST_FPS
 
+// Log FPS - undefine to print FPS to serial
+//#define LOG_FPS
+
 // x and y offset of 224x288 pixels at the middle bottom of the 320x480 screen
 #define TFT_X_OFFSET 48
 #define TFT_Y_OFFSET 192

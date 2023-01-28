@@ -8,7 +8,7 @@ I made the following changes.
 1. Changed from ILI9341 LCD driver in video.c to use my port of TFT_eSPI.
 2. Changed GPIO pins for buttons (see below).
 3. Added a background image around the play field.
-4. Added a FAST_FPS flag to config.h to try for 60 FPS updates instead of the default 30 FPS (looked at in galingo.ino).
+4. Added a FAST\_FPS define to config.h to try for 60 FPS updates instead of the default 30 FPS (looked at in galingo.ino).  Add LOG\_FPS define which enables logging FPS values to the serial port.
 5. Detect fast press of gCore power button to power down.
 6. A little cleanup.
 
@@ -16,6 +16,9 @@ Compiled on Arduino 1.8.19 with ESP32 Arduino package 2.0.6.  You'll need the fo
 
 1. My version of [TFT_eSPI](https://github.com/danjulio/TFT_eSPI).
 2. Arduino [gCore](https://github.com/danjulio/gCore/tree/main/Arduino/gCore) library.  Can also be directly downloaded from my [website](https://danjuliodesigns.com/products/gcore.html).
+3. Adafruit_GFX_Library
+
+Set the board type to WROOM.  This is to force all memory allocations to occur to ESP32 internal memory (external PSRAM is too slow for the emulator).
 
 The hookup diagram is shown below.  You can put the buttons on a proto board as I did or you can use a breadboard as Till did.  External pull-up resistors are required since I am using GPIO34-39 (10 k-ohm is fine).  I used an [amp breakout board](https://www.sparkfun.com/products/11044) from Sparkfun but only because I had it laying around.  You can also use the amp boards Till mentions.
 

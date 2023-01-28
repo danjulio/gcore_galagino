@@ -343,6 +343,11 @@ void update_screen(void) {
 void video(void *p) {
   esp_err_t ret;
   int chk_cnt = 0;
+#ifdef LOG_FPS
+  unsigned long start_t = 0;
+  unsigned long end_t = 0;
+  int fps;
+#endif
   
   tft.begin();
 
@@ -377,11 +382,17 @@ void video(void *p) {
   while(1) {
     update_screen();
 
-    // Periodically check for power off button press
-    if ((+chk_cnt % 30) == 0) {
+    // Periodically check for power off button press and [optionally] update FPS
+    if ((++chk_cnt % 30) == 0) {
       if (gc.power_button_pressed()) {
         gc.power_off();
       }
+#ifdef LOG_FPS
+      end_t = millis();
+      fps = round((30 * 1000.0) / (end_t - start_t));
+      start_t = end_t;
+      Serial.printf("%d FPS\n", fps);
+#endif
     }
   }
 }
