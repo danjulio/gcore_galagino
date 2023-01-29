@@ -1,5 +1,5 @@
 # Galagino ported to gCore
-This repo is a fork of Till Harbaum's awesome [Galaga emulator](https://github.com/harbaum/galagino) ported to gCore.  It runs really well.
+This repo is a fork of Till Harbaum's awesome [Galaga emulator](https://github.com/harbaum/galagino) ported to [gCore](https://github.com/danjulio/gCore).  It runs really well.
 
 ![Galaga on gCore](images/gcore_galaga.png)
 
