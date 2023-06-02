@@ -33,19 +33,19 @@ The hookup diagram is shown below.  You can put the buttons on a proto board as 
 been remade and emulated many times. So far the cheapest and smallest
 system able to do a faithful emulation of the original arcade machine
 was the raspberry pi. But even the much cheaper ESP32 should be able
-to easily emulate a machine from the early 80's, shouldn't it?
+too easily emulate a machine from the early 80's, shouldn't it?
 
 Well, things are not that easy. The galaga arcade was driven by three
 Z80 CPUs, each running at 3Mhz. Additionally the arcade machine
 included two more CPUs for button and coin handling and for audio
 support. And finally the hardware itself had dedicated support
 for simple wavetable audio, tilemap graphics and up to 64 sprites.
-The video resultion was 224 by 288 pixels. The ESP32 on the other hand
+The video resolution was 224 by 288 pixels. The ESP32 on the other hand
 comes with two cores running at 240MHz. But it lacks dedicated video
 hardware. Emulating the various CPUs as well as the handling of
 audio and graphics turned out to be challenging for the ESP32.
 
-Cheap TFT screens with a resolution of 320 by 240 pixels are avaialable
+Cheap TFT screens with a resolution of 320 by 240 pixels are available
 in various sizes from 2.0 inch to 3.2 inch allowing for a very small
 and cheap *galagino* setup.
 
@@ -77,7 +77,7 @@ components needed are:
 * five push buttons
 * breadboard and wires
 
-The entire setup should be connected as depiced below. The Devkit is
+The entire setup should be connected as depicted below. The Devkit is
 too wide for the breadboard leaving no space above it to connect
 wires. Thus the wires going to the top pin row of the Devkit are
 placed underneath the DevKit with the connections done as shown in the
@@ -149,7 +149,7 @@ The Galagino code can be configured through the [galagino/config.h](galagino/con
 file. This is also the place where it's possible to choose between the ILI9143
 controller (default) and the ST7789.
 
-Also the pin assigmnent can be adjusted or the TFT SPI clock.
+Also the pin assignment can be adjusted or the TFT SPI clock.
 
 ## Improvements
 
