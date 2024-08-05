@@ -24,6 +24,25 @@ The hookup diagram is shown below.  You can put the buttons on a proto board as 
 
 ![gCore Galaga hookup diagram](images/galaga_block_diagram.png)
 
+## Enclosure
+I used OpenSCAD to make a basic enclosure for my build.  The OpenSCAD source and STL files are in the ```enclosure``` directory.
+
+The design also includes support for a bit of extra hardware.
+
+1. Bulkhead USB-C connector connected to gCore's +5/GND inputs
+2. Bulkhead Power button connected to gCore's SW/GND inputs
+3. Bulkhead slide switch connected in series with the Audio Amp SW V+ to allow turning off the sound
+
+![Enclosure Front](images/console_front.jpg)
+
+![Enclosure Rear](images/console_rear.jpg)
+
+![Enclosure internals](images/enclosure_internals.jpg)
+
+![OpenSCAD parts](images/enclosure_parts.jpg)
+
+![OpenSCAD altogether image](images/openscad_alltogether.png)
+
 # Till Harbaum's Original Readme Below
 ## Galaga arcade emulator for ESP32
 
